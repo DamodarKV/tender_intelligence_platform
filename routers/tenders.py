@@ -1,16 +1,8 @@
-from fastapi import APIRouter, Request, HTTPException
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from database.excel_db import get_all_tenders, get_tender_by_id
-
-router = APIRouter(prefix="/tenders")
-templates = Jinja2Templates(directory="templates")
-
-
 @router.get("/", response_class=HTMLResponse)
 async def list_tenders(request: Request):
     tenders = get_all_tenders()
-    return templates.TemplateResponse("tenders.html", {"request": request, "tenders": tenders})
+    # Pass request first 👇
+    return templates.TemplateResponse(request, "tenders.html", {"tenders": tenders})
 
 
 @router.get("/{tender_id}", response_class=HTMLResponse)
@@ -19,4 +11,5 @@ async def view_tender_detail(request: Request, tender_id: str):
     if not tender:
         raise HTTPException(status_code=404, detail="Requested Tender data could not be located.")
 
-    return templates.TemplateResponse("tender_detail.html", {"request": request, "tender": tender})
+    # Pass request first 👇
+    return templates.TemplateResponse(request, "tender_detail.html", {"tender": tender})

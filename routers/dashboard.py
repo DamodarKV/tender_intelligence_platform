@@ -58,17 +58,22 @@ async def read_dashboard(
     total_value = sum(t.get("value", 0) for t in all_tenders)
     open_tenders = len([t for t in all_tenders if t.get("status") == "Open"])
 
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request,
-        "total_tenders": total_tenders,
-        "total_value": total_value,
-        "open_tenders": open_tenders,
-        "tenders": filtered_tenders,
-        "filters": {
-            "title": title,
-            "min_value": min_value,
-            "max_value": max_value,
-            "location": location,
-            "status": status
+    # Change from: templates.TemplateResponse("dashboard.html", {...})
+    # To this:
+    return templates.TemplateResponse(
+        request,
+        "dashboard.html",
+        {
+            "total_tenders": total_tenders,
+            "total_value": total_value,
+            "open_tenders": open_tenders,
+            "tenders": filtered_tenders,
+            "filters": {
+                "title": title,
+                "min_value": min_value,
+                "max_value": max_value,
+                "location": location,
+                "status": status
+            }
         }
-    })
+    )
