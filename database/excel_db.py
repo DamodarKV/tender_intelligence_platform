@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-EXCEL_FILE = "/Users/damodarkv/Documents/Work/tender_intelligence_platform/tenders.xlsx"
+EXCEL_FILE = "tenders.xlsx"
 
 
 def get_all_tenders():
