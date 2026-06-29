@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-EXCEL_FILE = "tenders.xlsx"
+EXCEL_FILE = "/Users/damodarkv/Documents/Work/tender_intelligence_platform/tenders.xlsx"
 
 
 def get_all_tenders():
@@ -83,7 +83,7 @@ def get_all_tenders():
         row_dict["deadline"] = row_dict.get(deadline_col, "N/A")
 
         normalized_list.append(row_dict)
-    print(normalized_list)
+    #print(normalized_list)
     return normalized_list
 
 
@@ -91,4 +91,66 @@ def get_tender_by_id(tender_id: str):
     tenders = get_all_tenders()
     return next((t for t in tenders if t["id"] == str(tender_id)), None)
 
+def update_tender(
+    tender_id,
+    organisation_chain,
+    tender_value,
+    work_location,
+    status
+):
+
+    print(f"Tender ID:{tender_id}")
+    print(organisation_chain,
+    tender_value,
+    work_location,
+    status)
+    xl = pd.ExcelFile(EXCEL_FILE)
+
+    df = xl.parse(0)
+
+    df.columns = df.columns.str.strip().str.lower()
+
+    id_col = next(
+        (c for c in df.columns if "id" in c or "number" in c),
+        df.columns[0]
+    )
+
+    index = df[
+        df[id_col].astype(str) == str(tender_id)
+    ].index
+
+    if len(index) == 0:
+        return
+
+    idx = index[0]
+
+    if "organisation chain" in df.columns:
+        df.at[idx, "organisation chain"] = organisation_chain
+
+    if "tender value" in df.columns:
+        df.at[idx, "tender value"] = tender_value
+
+    if "work location" in df.columns:
+        df.at[idx, "work location"] = work_location
+
+    if "status" in df.columns:
+        df.at[idx, "status"] = status
+
+    with pd.ExcelWriter(
+        EXCEL_FILE,
+        engine="openpyxl",
+        mode="a",
+        if_sheet_exists="replace"
+    ) as writer:
+
+        df.to_excel(writer, sheet_name=xl.sheet_names[0], index=False)
+
+        for sheet in xl.sheet_names[1:]:
+            xl.parse(sheet).to_excel(
+                writer,
+                sheet_name=sheet,
+                index=False
+            )
+
+update_tender('2026_CEASM_148392_2','CE-ASM',12036985,"Baksa","Open")
 #get_all_tenders()

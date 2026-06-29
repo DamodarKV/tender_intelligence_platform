@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="mb-6">
-    <a href="javascript:history.back()" class="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition">
-        ← Back to Previous Dashboard
-    </a>
-</div>
+<div class="flex justify-between items-center mt-6 border-t pt-6">
 
+    <a href="/tenders"
+       class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg">
+        ← Back
+    </a>
+
+    <a href="/tenders/edit/{{ tender.id }}"
+       class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg">
+        ✏ Edit Tender
+    </a>
+
+</div>
 <div class="bg-white shadow-md rounded-xl overflow-hidden border border-gray-200 max-w-4xl mx-auto">
     <div class="bg-blue-900 px-8 py-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
