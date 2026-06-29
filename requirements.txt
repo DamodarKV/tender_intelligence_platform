@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 jinja2
-pandas
-openpyxl
 python-multipart
-aiofiles
+openpyxl
+pandas
+itsdangerous

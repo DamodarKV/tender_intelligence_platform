@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from database.excel_db import get_all_tenders
 
@@ -16,6 +17,11 @@ async def read_dashboard(
         location: str = "",
         status: str = ""
 ):
+    if not request.session.get("user"):
+        return RedirectResponse(
+            "/login",
+            status_code=303
+        )
     all_tenders = get_all_tenders()
     filtered_tenders = []
 
