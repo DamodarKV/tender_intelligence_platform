@@ -152,5 +152,5 @@ def update_tender(
                 index=False
             )
 
-update_tender('2026_CEASM_148392_2','CE-ASM',12036985,"Baksa","Open")
+#update_tender('2026_CEASM_148392_2','CE-ASM',12036985,"Baksa","Open")
 #get_all_tenders()
