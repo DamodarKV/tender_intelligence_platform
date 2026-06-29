@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from database.excel_db import get_all_tenders
+from utils.auth import authenticate
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -16,6 +17,11 @@ async def read_dashboard(
         location: str = "",
         status: str = ""
 ):
+    auth = authenticate(request)
+
+    if auth:
+        return auth
+
     all_tenders = get_all_tenders()
     filtered_tenders = []
 

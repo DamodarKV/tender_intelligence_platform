@@ -1,12 +1,19 @@
 from fastapi import FastAPI
-from routers import dashboard, tenders
+from starlette.middleware.sessions import SessionMiddleware
+
+from routers import dashboard, tenders, auth
 
 app = FastAPI(title="Tender Intelligence Platform")
 
-# Mount Routers
+app.add_middleware(
+    SessionMiddleware,
+    secret_key="TenderPlatformSecret123"
+)
+
+app.include_router(auth.router)
 app.include_router(dashboard.router)
 app.include_router(tenders.router)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
